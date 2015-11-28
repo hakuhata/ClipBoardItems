@@ -69,7 +69,7 @@ namespace ClipBoardItems
                 setting.ButtonIdColor(2, "B")
             );
 
-            DebugOutput(number, GetkeyName(number,"PW")); // Console Debug Output
+            //DebugOutput(number, GetkeyName(number,"PW")); // Console Debug Output
         }
         private void ButtonClickPw(object sender, EventArgs e)
         {
@@ -85,7 +85,7 @@ namespace ClipBoardItems
                 setting.ButtonPwColor(2, "B")
             );
 
-            DebugOutput(number, GetkeyName(number, "PW")); // Console Debug Output
+            //DebugOutput(number, GetkeyName(number, "PW")); // Console Debug Output
         }
         /* ========== File Open ========== */
         //private void TextFileOpen()

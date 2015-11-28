@@ -54,7 +54,6 @@
       <DependentUpon>ClipBoardItems.cs</DependentUpon>
     </Compile>
     <Compile Include="InifileUtils.cs" />
-    <Compile Include="NumberEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setting.cs" />
