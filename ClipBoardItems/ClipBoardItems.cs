@@ -6,129 +6,144 @@ namespace ClipBoardItems
 {
     public partial class ClipBoardItems : Form
     {
-        private static Setting setting = new Setting();
-        private string[] arrayText = new string[256];
-        private ValueButton[] ButtonId = new ValueButton[setting.DoButtonQuantity()];
-        private ValueButton[] ButtonPw = new ValueButton[setting.DoButtonQuantity()];
-        private InifileUtils sInifileUtils = new InifileUtils("Item.ini");
+        private ValueButton button = new ValueButton();
+        private ValueButton button1 = new ValueButton();
+        private Setting setting = new Setting();
+
+        private InifileUtils sInifileUtils = new InifileUtils("Item01.ini");
+        private InifileUtils sInifileUtils2nd = new InifileUtils("Item02.ini");
+        private InifileUtils sInifileUtils3rd = new InifileUtils("Item03.ini");
+        private InifileUtils sInifileUtils4th = new InifileUtils("Item04.ini");
+        private InifileUtils sInifileUtils5th = new InifileUtils("Item05.ini");
 
         public ClipBoardItems()
         {
             InitializeComponent();
-            Text = "ClipBoardItem";
-            this.FormBorderStyle = FormBorderStyle.FixedSingle; // サイズ変更不可の直線ウィンドウに変更する
-            this.MaximizeBox = !this.MaximizeBox;               //フォームの最大化ボタンの表示、非表示を切り替える
-            //this.MinimizeBox = !this.MinimizeBox;             //フォームの最小化ボタンの表示、非表示を切り替える
-            //this.BackColor = Color.FromKnownColor(KnownColor.Window); // このフォームの背景色をウィンドウの背景にする (システム色の名前による指定)
-            this.Height += setting.DoButtonQuantity() * 25;
-            this.Width = 330;
-            //TextFileOpen();
-            setting.DoButtonQuantity();
+            // サイズ変更不可の直線ウィンドウに変更する
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            //フォームの最大化ボタンの表示、非表示を切り替える
+            this.MaximizeBox = !this.MaximizeBox;
+            // ウィンドウ本体の縦幅
+            this.Height += 105 + 25 * 20;
+            // ウィンドウ本体の横幅
+            this.Width = 375;
         }
+
+        // タブ描画、ボタン描画
         private void ClipBoardItems_Load(object sender, EventArgs e)
         {
-            for (int i = 0, j = 0, k = 0, h = 0; i < setting.DoButtonQuantity(); i++, j += 3, k += 3, h += 3)
+            TabControl MainTabControl = new System.Windows.Forms.TabControl();
+            TabPage[] TabPages = new System.Windows.Forms.TabPage[10];
+
+            //コントロールの描画を一旦止める
+            this.SuspendLayout();
+
+            // MainTabの初期値
+            button.MainTabControl(MainTabControl);
+            //MainTab表示
+            Controls.Add(MainTabControl);
+
+            for (int i = 0; i < 5; i++ )
             {
-                ButtonId[i] = new ValueButton();                                          // インスタンスを作成
-                ButtonId[i].Location = new System.Drawing.Point(0,25 * i);                // 配置位置を設定
-                ButtonId[i].Name = "ID:" + i.ToString();                                  // Nameプロパティを設定
-                ButtonId[i].Size = new System.Drawing.Size(150, 25);                      // サイズを設定
-                ButtonId[i].TabIndex = i + 1;                                             // TabIndexを設定
-                ButtonId[i].Text = GetButtonName(i, "ButtonNameID");                          // ボタンテキストを設定
-                ButtonId[i].TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                ButtonId[i].Click += new System.EventHandler(ButtonClickId);              // イベントハンドラの登録
-                this.Controls.Add(ButtonId[i]);                                           // フォームに配置
-                ButtonId[i].value = arrayText[j + 1];                                     // txtのID行を読む
-                ButtonId[i].BackColor = SystemColors.Control;
-
-                ButtonPw[i] = new ValueButton();                                          // インスタンスを作成
-                ButtonPw[i].Location = new System.Drawing.Point(160,25 * i);              // 配置位置を設定
-                ButtonPw[i].Name = "PW:" + i.ToString();                                  // Nameプロパティを設定
-                ButtonPw[i].Size = new System.Drawing.Size(150, 25);                      // サイズを設定
-                ButtonPw[i].TabIndex = i + 1;                                             // TabIndexを設定
-                ButtonPw[i].Text = GetButtonName(i, "ButtonNamePW");                          // ボタンテキストを設定
-                ButtonPw[i].TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                ButtonPw[i].Click += new System.EventHandler(ButtonClickPw);              // イベントハンドラの登録
-                this.Controls.Add(ButtonPw[i]);                                           // フォームに配置
-                ButtonPw[i].value = arrayText[j + 2];                                     // txtのPW行を読む
-                ButtonPw[i].BackColor = SystemColors.Control;
+                // Tab インスタンス
+                TabPages[i] = new TabPage();
+                // TabPagesの初期値
+                button.TabPages(TabPages[i]);
+                //TabPage表示
+                MainTabControl.Controls.Add(TabPages[i]); 
             }
-        }
 
+            for (int i = 0; i < 20; i++)
+            {
+                // 指定ボタン数を表示
+                Control btnIdCreate = button.ButtonCreate(button, ButtonClickId, i, 1, sInifileUtils);
+                // TabPageにボタンを表示
+                TabPages[0].Controls.Add(btnIdCreate);
+
+                // 指定ボタン数を表示
+                Control btnPwCreate = button.ButtonCreate(button, ButtonClickPw, i, 2, sInifileUtils);
+                // TabPageにボタンを表示
+                TabPages[0].Controls.Add(btnPwCreate);
+            }
+            //--------------------------------------------------------------------
+            for (int i = 0; i < 20; i++)
+            {
+                Control btnIdCreate2nd = button.ButtonCreate(button1, ButtonClickId2nd, i, 1, sInifileUtils2nd);
+                TabPages[1].Controls.Add(btnIdCreate2nd);
+                Control btnIdCreate3rd = button.ButtonCreate(button1, ButtonClickId3rd, i, 1, sInifileUtils3rd);
+                TabPages[2].Controls.Add(btnIdCreate3rd);
+                Control btnIdCreate4th = button.ButtonCreate(button1, ButtonClickId4th, i, 1, sInifileUtils4th);
+                TabPages[3].Controls.Add(btnIdCreate4th);
+                Control btnIdCreate5th = button.ButtonCreate(button1, ButtonClickId5th, i, 1, sInifileUtils5th);
+                TabPages[4].Controls.Add(btnIdCreate5th);
+
+                Control btnPwCreate2nd = button.ButtonCreate(button1, ButtonClickPw, i, 2, sInifileUtils2nd);
+                TabPages[1].Controls.Add(btnPwCreate2nd);
+                Control btnPwCreate3rd = button.ButtonCreate(button1, ButtonClickPw2nd, i, 2, sInifileUtils3rd);
+                TabPages[2].Controls.Add(btnPwCreate3rd);
+                Control btnPwCreate4th = button.ButtonCreate(button1, ButtonClickPw3rd, i, 2, sInifileUtils4th);
+                TabPages[3].Controls.Add(btnPwCreate4th);
+                Control btnPwCreate5th = button.ButtonCreate(button1, ButtonClickPw4th, i, 2, sInifileUtils5th);
+                TabPages[4].Controls.Add(btnPwCreate5th);
+            }
+            //コントロールの描画を再開
+            this.ResumeLayout(false); 
+        }
+        // IDボタンをクリック時の動作
         private void ButtonClickId(object sender, EventArgs e)
         {
-            int number = int.Parse(DoStringDelete(((System.Windows.Forms.Button)sender).Name)); // Nameから不要な文字列を置換して、押下したボタンの数値を取得
-            DoClipBoardSet(GetkeyName(number,"ID")); // Clipboard に文字列をコピーする
-
-            // Button ColorをDefaultにする
-            DoButtonColorLiset();
-            // 押下したButton Color変更
-            ButtonId[number].BackColor = Color.FromArgb(
-                setting.ButtonIdColor(0, "R"),
-                setting.ButtonIdColor(1, "G"),
-                setting.ButtonIdColor(2, "B")
-            );
-
-            //DebugOutput(number, GetkeyName(number,"PW")); // Console Debug Output
+            ButtonClickEvent(sender, e, sInifileUtils, "ID");
         }
+        private void ButtonClickId2nd(object sender, EventArgs e)
+        {
+            ButtonClickEvent(sender, e, sInifileUtils2nd, "ID");
+        }
+        private void ButtonClickId3rd(object sender, EventArgs e)
+        {
+            ButtonClickEvent(sender, e, sInifileUtils3rd, "ID");
+        }
+        private void ButtonClickId4th(object sender, EventArgs e)
+        {
+            ButtonClickEvent(sender, e, sInifileUtils4th, "ID");
+        }
+        private void ButtonClickId5th(object sender, EventArgs e)
+        {
+            ButtonClickEvent(sender, e, sInifileUtils5th, "ID");
+        }
+        // PWボタンをクリック時の動作
         private void ButtonClickPw(object sender, EventArgs e)
         {
-            int number = int.Parse(DoStringDelete(((System.Windows.Forms.Button)sender).Name)); // Nameから不要な文字列を置換して、押下したボタンの数値を取得
-            DoClipBoardSet(GetkeyName(number, "PW")); // Clipboard に文字列をコピーする
-
-            // Button ColorをDefaultにする
-            DoButtonColorLiset();
-            // 押下したButton Color変更
-            ButtonPw[number].BackColor = Color.FromArgb(
-                setting.ButtonPwColor(0, "R"),
-                setting.ButtonPwColor(1, "G"),
-                setting.ButtonPwColor(2, "B")
-            );
-
-            //DebugOutput(number, GetkeyName(number, "PW")); // Console Debug Output
+            ButtonClickEvent(sender, e, sInifileUtils, "PW");
         }
-        /* ========== File Open ========== */
-        //private void TextFileOpen()
-        //{
-        //    try { this.arrayText = System.IO.File.ReadAllLines(@"Item.txt", System.Text.Encoding.GetEncoding("shift-jis")); }
-        //    catch (Exception)
-        //    { MessageBox.Show("読み込めるテキストファイルがありません"); }
-        //}
-        /* ========== String Copy ========== */
-        private void DoClipBoardSet(string SetItem)
+        private void ButtonClickPw2nd(object sender, EventArgs e)
         {
-            if (SetItem != "") { Clipboard.SetText(SetItem); } // クリップボードに文字列をコピーする
-            if (SetItem == "") { SetItem = "No Item"; Clipboard.SetText(SetItem); }
+            ButtonClickEvent(sender, e, sInifileUtils2nd, "PW");
         }
-        private string DoStringDelete(string text)
+        private void ButtonClickPw3rd(object sender, EventArgs e)
         {
-            text = text.Replace("ID:", ""); // 文字列を置換
-            text = text.Replace("PW:", ""); // 文字列を置換
-            text = text.Replace("Service:", ""); // 文字列を置換
-            return text;
+            ButtonClickEvent(sender, e, sInifileUtils3rd, "PW");
         }
-
-        private string GetButtonName(int sNum, string sName)
+        private void ButtonClickPw4th(object sender, EventArgs e)
         {
-            return sInifileUtils.getValueString(sNum.ToString(), sName);
+            ButtonClickEvent(sender, e, sInifileUtils4th, "PW");
         }
-        private string GetkeyName(int sNum, string sName)
+        private void ButtonClickPw5th(object sender, EventArgs e)
         {
-            return sInifileUtils.getValueString(sNum.ToString(), sName);
+            ButtonClickEvent(sender, e, sInifileUtils5th, "PW");
         }
-        private void DoButtonColorLiset()
+        private void ButtonClickEvent(object sender, EventArgs e, InifileUtils sIniFile, string IdPwString)
         {
-            for (int i = 0; i < setting.DoButtonQuantity(); i++)
-            {
-                ButtonId[i].BackColor = SystemColors.Control; //ButtonId[i].BackColor = Color.Empty;
-                ButtonPw[i].BackColor = SystemColors.Control; //ButtonId[i].BackColor = Color.Empty;
-            }
-        }
-        /* ========== Debug ========== */
-        private void DebugOutput(int senderId, string SetItem)
-        {
-            if (SetItem != "") { Console.WriteLine(senderId + " " + SetItem); }
-            if (SetItem == "") { SetItem = "No Item"; Console.WriteLine(senderId + " " + SetItem); }
+            // senderからNameの値を取得
+            string senderName = ((System.Windows.Forms.Button)sender).Name;
+            // 文字列を削除して数字のみにする
+            int number = int.Parse(button.TextDelete(senderName, IdPwString));
+            // Ini File から文字列を取得
+            string keyButton = button.GetkeyName(sIniFile, number, IdPwString);
+            // Clipboard に文字列をコピーする
+            button.DoClipBoardSet(keyButton);
+            // Console Debug Output
+            button.DebugOutput(number, button.GetkeyName(sIniFile, number, IdPwString));
+            //DebugOutput(number, GetButtonName(number, "ButtonNamePW")); // Console Debug Output
         }
     }
 }

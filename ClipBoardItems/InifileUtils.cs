@@ -7,7 +7,7 @@ namespace ClipBoardItems
     /// <summary>
     /// iniファイル取り扱いのためのユーティリティクラス
     /// </summary>
-    class InifileUtils
+    public class InifileUtils
     {
         /// <summary>
         /// iniファイルのパスを保持

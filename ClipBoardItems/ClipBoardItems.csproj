@@ -53,6 +53,7 @@
     <Compile Include="ClipBoardItems.Designer.cs">
       <DependentUpon>ClipBoardItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="IniFileData.cs" />
     <Compile Include="InifileUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
