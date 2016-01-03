@@ -48,11 +48,11 @@ namespace ClipBoardItems
                 // Tab インスタンス
                 TabPages[i] = new TabPage();
                 // TabPagesの初期値
-                button.TabPages(TabPages[i]);
+                button.TabPages(TabPages[i], i);
                 //TabPage表示
                 MainTabControl.Controls.Add(TabPages[i]); 
             }
-
+            
             for (int i = 0; i < 20; i++)
             {
                 // 指定ボタン数を表示
@@ -142,7 +142,7 @@ namespace ClipBoardItems
             // Clipboard に文字列をコピーする
             button.DoClipBoardSet(keyButton);
             // Console Debug Output
-            button.DebugOutput(number, button.GetkeyName(sIniFile, number, IdPwString));
+            //button.DebugOutput(number, button.GetkeyName(sIniFile, number, IdPwString));
             //DebugOutput(number, GetButtonName(number, "ButtonNamePW")); // Console Debug Output
         }
     }

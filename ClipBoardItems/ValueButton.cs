@@ -6,6 +6,8 @@ namespace ClipBoardItems
 {
     public partial class ValueButton : Button
     {
+        private InifileUtils[] sIni = new InifileUtils[5];
+
         public ValueButton()
         {
         }
@@ -13,14 +15,12 @@ namespace ClipBoardItems
         // IDボタンの初期化
         public ValueButton ButtonCreate(ValueButton button, System.EventHandler ButtonClick, int sNum, int buttonType, InifileUtils sInifileUtils)
         {
-            //InifileUtils sInifileUtils = new InifileUtils("Item.ini");
-
             string name = "";
             string text = "";
             int drawPoint = 0;
 
-            if (buttonType == 1) { name = "ID"; text = "ButtonNameID"; drawPoint = 10; }
-            if (buttonType == 2) { name = "PW"; text = "ButtonNamePW"; drawPoint = 170; }
+            if (buttonType == 1) { name = "CopyID"; text = "NameID"; drawPoint = 10; }
+            if (buttonType == 2) { name = "CopyPW"; text = "NamePW"; drawPoint = 170; }
 
             // インスタンスを作成
             button = new ValueButton();
@@ -46,7 +46,7 @@ namespace ClipBoardItems
             // 配置位置を設定
             MainTabControl.Location = new System.Drawing.Point(10, 10);
             // Nameプロパティを設定
-            MainTabControl.Name = "tabControl1";
+            MainTabControl.Name = "tabControl";
             // 選択されているタブページのインデックス取得
             MainTabControl.SelectedIndex = 0;
             // サイズを設定
@@ -54,17 +54,13 @@ namespace ClipBoardItems
             // TabIndexを設定
             MainTabControl.TabIndex = 0;
         }
-        public void TabPages(TabPage TabPages)
+        public void TabPages(TabPage TabPages, int i)
         {
             // Nameプロパティを設定
             TabPages.Name = "TabPage";
             // タブテキストを設定
-            TabPages.Text = "TabText";
-        }
-        private string GetButtonName(InifileUtils sInifileUtils, int sNum, string sName)
-        {
-            // iniFileからボタンの名前を取得
-            return sInifileUtils.getValueString(sNum.ToString(), sName);
+            //TabPages.Text = "TabText";
+            TabPages.Text = GetTabName(i);
         }
         public string GetkeyName(InifileUtils sInifileUtils, int sNum, string sName)
         {
@@ -74,7 +70,7 @@ namespace ClipBoardItems
         public void DoClipBoardSet(string iSetItem)
         {
             // クリップボードに文字列をコピーする
-            if (iSetItem != "") { Clipboard.SetText(iSetItem); } // クリップボードに文字列をコピーする
+            if (iSetItem != "") { Clipboard.SetText(iSetItem); }
             if (iSetItem == "") { iSetItem = "Text Not Found"; Clipboard.SetText(iSetItem); }
         }
         public string TextDelete(string text, string textDelete)
@@ -87,6 +83,25 @@ namespace ClipBoardItems
             // Consoleにデバッグ出力する
             if (SetItem != "") { Console.WriteLine(senderId + " " + SetItem); }
             if (SetItem == "") { SetItem = "No Item"; Console.WriteLine(senderId + " " + SetItem); }
+        }
+        private string GetButtonName(InifileUtils sInifileUtils, int sNum, string sName)
+        {
+            // iniFileからボタンの名前を取得
+            return sInifileUtils.getValueString(sNum.ToString(), sName);
+        }
+        private string GetTabName(int i)
+        {
+            // IniFile 読み込み
+            InifileUtils[] sIniFile = GetIniFileUtils(i);
+            // TabPages.Textに表示するタブ名取得
+            return sIniFile[i].getValueString("TabPage", "Tab");
+        }
+        private InifileUtils[] GetIniFileUtils(int i)
+        {
+            // IniFile読み込み
+            sIni[i] = new InifileUtils("Item0" + (i + 1).ToString() + ".ini");
+            // IniFileのCloneを作成し、結果を返す
+            return (InifileUtils[])sIni.Clone();
         }
     }
 }
