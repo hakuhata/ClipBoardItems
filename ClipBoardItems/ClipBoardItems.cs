@@ -6,15 +6,8 @@ namespace ClipBoardItems
 {
     public partial class ClipBoardItems : Form
     {
-        private ValueButton button = new ValueButton();
-        private ValueButton button1 = new ValueButton();
-        private Setting setting = new Setting();
-
-        private InifileUtils sInifileUtils = new InifileUtils("Item01.ini");
-        private InifileUtils sInifileUtils2nd = new InifileUtils("Item02.ini");
-        private InifileUtils sInifileUtils3rd = new InifileUtils("Item03.ini");
-        private InifileUtils sInifileUtils4th = new InifileUtils("Item04.ini");
-        private InifileUtils sInifileUtils5th = new InifileUtils("Item05.ini");
+        private static ValueButton button = new ValueButton();
+        private InifileUtils[] sIniFileUtils = button.GetIniFileUtils();
 
         public ClipBoardItems()
         {
@@ -56,35 +49,36 @@ namespace ClipBoardItems
             for (int i = 0; i < 20; i++)
             {
                 // 指定ボタン数を表示
-                Control btnIdCreate = button.ButtonCreate(button, ButtonClickId, i, 1, sInifileUtils);
+                Control btnIdCreate = button.ButtonCreate(button, ButtonClickId, i, 1, sIniFileUtils[0]);
                 // TabPageにボタンを表示
                 TabPages[0].Controls.Add(btnIdCreate);
 
                 // 指定ボタン数を表示
-                Control btnPwCreate = button.ButtonCreate(button, ButtonClickPw, i, 2, sInifileUtils);
+                Control btnPwCreate = button.ButtonCreate(button, ButtonClickPw, i, 2, sIniFileUtils[0]);
                 // TabPageにボタンを表示
                 TabPages[0].Controls.Add(btnPwCreate);
             }
             //--------------------------------------------------------------------
             for (int i = 0; i < 20; i++)
             {
-                Control btnIdCreate2nd = button.ButtonCreate(button1, ButtonClickId2nd, i, 1, sInifileUtils2nd);
+                Control btnIdCreate2nd = button.ButtonCreate(button, ButtonClickId2nd, i, 1, sIniFileUtils[1]);
                 TabPages[1].Controls.Add(btnIdCreate2nd);
-                Control btnIdCreate3rd = button.ButtonCreate(button1, ButtonClickId3rd, i, 1, sInifileUtils3rd);
+                Control btnIdCreate3rd = button.ButtonCreate(button, ButtonClickId3rd, i, 1, sIniFileUtils[2]);
                 TabPages[2].Controls.Add(btnIdCreate3rd);
-                Control btnIdCreate4th = button.ButtonCreate(button1, ButtonClickId4th, i, 1, sInifileUtils4th);
+                Control btnIdCreate4th = button.ButtonCreate(button, ButtonClickId4th, i, 1, sIniFileUtils[3]);
                 TabPages[3].Controls.Add(btnIdCreate4th);
-                Control btnIdCreate5th = button.ButtonCreate(button1, ButtonClickId5th, i, 1, sInifileUtils5th);
+                Control btnIdCreate5th = button.ButtonCreate(button, ButtonClickId5th, i, 1, sIniFileUtils[4]);
                 TabPages[4].Controls.Add(btnIdCreate5th);
 
-                Control btnPwCreate2nd = button.ButtonCreate(button1, ButtonClickPw, i, 2, sInifileUtils2nd);
+                Control btnPwCreate2nd = button.ButtonCreate(button, ButtonClickPw2nd, i, 2, sIniFileUtils[1]);
                 TabPages[1].Controls.Add(btnPwCreate2nd);
-                Control btnPwCreate3rd = button.ButtonCreate(button1, ButtonClickPw2nd, i, 2, sInifileUtils3rd);
+                Control btnPwCreate3rd = button.ButtonCreate(button, ButtonClickPw3rd, i, 2, sIniFileUtils[2]);
                 TabPages[2].Controls.Add(btnPwCreate3rd);
-                Control btnPwCreate4th = button.ButtonCreate(button1, ButtonClickPw3rd, i, 2, sInifileUtils4th);
+                Control btnPwCreate4th = button.ButtonCreate(button, ButtonClickPw4th, i, 2, sIniFileUtils[3]);
                 TabPages[3].Controls.Add(btnPwCreate4th);
-                Control btnPwCreate5th = button.ButtonCreate(button1, ButtonClickPw4th, i, 2, sInifileUtils5th);
+                Control btnPwCreate5th = button.ButtonCreate(button, ButtonClickPw5th, i, 2, sIniFileUtils[4]);
                 TabPages[4].Controls.Add(btnPwCreate5th);
+
             }
             //コントロールの描画を再開
             this.ResumeLayout(false); 
@@ -92,45 +86,47 @@ namespace ClipBoardItems
         // IDボタンをクリック時の動作
         private void ButtonClickId(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils, "ID");
+            ButtonClickEvent(sender, e, sIniFileUtils[0], "CopyID");
         }
         private void ButtonClickId2nd(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils2nd, "ID");
+            ButtonClickEvent(sender, e, sIniFileUtils[1], "CopyID");
         }
         private void ButtonClickId3rd(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils3rd, "ID");
+            ButtonClickEvent(sender, e, sIniFileUtils[2], "CopyID");
         }
         private void ButtonClickId4th(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils4th, "ID");
+            ButtonClickEvent(sender, e, sIniFileUtils[3], "CopyID");
         }
         private void ButtonClickId5th(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils5th, "ID");
+            ButtonClickEvent(sender, e, sIniFileUtils[4], "CopyID");
         }
         // PWボタンをクリック時の動作
         private void ButtonClickPw(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils, "PW");
+            ButtonClickEvent(sender, e, sIniFileUtils[0], "CopyPW");
         }
         private void ButtonClickPw2nd(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils2nd, "PW");
+            ButtonClickEvent(sender, e, sIniFileUtils[1], "CopyPW");
         }
         private void ButtonClickPw3rd(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils3rd, "PW");
+            ButtonClickEvent(sender, e, sIniFileUtils[2], "CopyPW");
         }
         private void ButtonClickPw4th(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils4th, "PW");
+            ButtonClickEvent(sender, e, sIniFileUtils[3], "CopyPW");
         }
         private void ButtonClickPw5th(object sender, EventArgs e)
         {
-            ButtonClickEvent(sender, e, sInifileUtils5th, "PW");
+            ButtonClickEvent(sender, e, sIniFileUtils[4], "CopyPW");
         }
+        //----------------------------------------------------
+
         private void ButtonClickEvent(object sender, EventArgs e, InifileUtils sIniFile, string IdPwString)
         {
             // senderからNameの値を取得

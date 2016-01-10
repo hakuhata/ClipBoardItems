@@ -6,8 +6,6 @@ namespace ClipBoardItems
 {
     public partial class ValueButton : Button
     {
-        private InifileUtils[] sIni = new InifileUtils[5];
-
         public ValueButton()
         {
         }
@@ -61,6 +59,7 @@ namespace ClipBoardItems
             // タブテキストを設定
             //TabPages.Text = "TabText";
             TabPages.Text = GetTabName(i);
+            //TabPages.Text = GetTabName();
         }
         public string GetkeyName(InifileUtils sInifileUtils, int sNum, string sName)
         {
@@ -89,19 +88,51 @@ namespace ClipBoardItems
             // iniFileからボタンの名前を取得
             return sInifileUtils.getValueString(sNum.ToString(), sName);
         }
+        //private string GetTabName(int i)
         private string GetTabName(int i)
         {
             // IniFile 読み込み
-            InifileUtils[] sIniFile = GetIniFileUtils(i);
+            //InifileUtils[] sIniFile = GetIniFileUtils(i);
+            InifileUtils[] sIniFile = GetIniFileUtils();
             // TabPages.Textに表示するタブ名取得
             return sIniFile[i].getValueString("TabPage", "Tab");
         }
-        private InifileUtils[] GetIniFileUtils(int i)
+        public InifileUtils[] GetIniFileUtils()
         {
-            // IniFile読み込み
-            sIni[i] = new InifileUtils("Item0" + (i + 1).ToString() + ".ini");
+            InifileUtils[] sIni = new InifileUtils[5];
+
+            // アプリケーションの格納ディレクトリを取得
+            string filePath = GetApplicationPath();
+            // 与えたパスからIniFile名を取得
+            System.Collections.ObjectModel.ReadOnlyCollection<string> files = GetIniFileName(filePath);
+            for (int i = 0; i < 5; i++)
+            {
+                string iniFileName = files[i].Replace(filePath, "");
+                sIni[i] = new InifileUtils(iniFileName);
+            }
             // IniFileのCloneを作成し、結果を返す
             return (InifileUtils[])sIni.Clone();
+        }
+        private System.Collections.ObjectModel.ReadOnlyCollection<string> GetIniFileName(string filePath)
+        {
+            //参照にMicrosoft.VisualBasic.dllを追加する必要がある
+            //"DOBON.NET"を含むHTMLファイルを、大文字小文字を区別して探す
+            System.Collections.ObjectModel.ReadOnlyCollection<string> files =
+                Microsoft.VisualBasic.FileIO.FileSystem.FindInFiles(filePath,
+                "",
+                false,
+                Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories,
+                new string[] { "*.ini" }
+                );
+
+            return files;
+        }
+        private string GetApplicationPath()
+        {
+            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string filePath = appPath.Replace("ClipBoardItems.exe", "");
+
+            return filePath;
         }
     }
 }
