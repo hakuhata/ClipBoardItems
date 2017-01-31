@@ -1,47 +1,34 @@
 ﻿namespace ClipBoardItems
 {
     using System.Collections.ObjectModel;
-    using Microsoft.VisualBasic.FileIO;
-    using System.Reflection;
 
     class FilePathUtils
     {
-        public InifileUtils[] GetIniFileUtils()
+        private FindFiles findFile;
+        private string directoryPath;
+        private int iniFileQuantity = 0; // iniファイルの数
+
+        public FilePathUtils(string directoryPath)
         {
-            // IniFileのファイル名を取得するメソッド
+            findFile = new FindFiles(directoryPath); // 全てのIniファイルが入る
+            this.directoryPath = directoryPath;
+        }
 
-            int num = 5;
-            InifileUtils[] sIni = new InifileUtils[num];
+        // 全てのiniファイル名を取得
+        public InifileUtils[] IniFileNameArray()
+        {
+            string iniFileName = "";
+            string dirPath = this.directoryPath;
+            InifileUtils[] sIni = new InifileUtils[5];
+            ReadOnlyCollection<string> iniFile = findFile.GetIniFileName();
+            int fileQuantity = this.iniFileQuantity;
 
-            // アプリケーションの格納ディレクトリを取得
-            string filePath = GetApplicationPath();
-            // アプリケーションのパスからIniFile名を取得
-            ReadOnlyCollection<string> files = GetIniFileName(filePath);
-
-            for (int i = 0; i < num; i++)
+            for (fileQuantity = 0; fileQuantity < 5; fileQuantity++)
             {
-                // Iniファイルパスからファイル名のみに置換する
-                string iniFileName = files[i].Replace(filePath, "");
-                // ファイル名のみのIniファイルを配列に格納
-                sIni[i] = new InifileUtils(iniFileName);
+                iniFileName = iniFile[fileQuantity].Replace(dirPath, ""); // Iniファイルパスからファイル名のみに置換する
+                sIni[fileQuantity] = new InifileUtils(iniFileName); // ファイル名のみのIniファイルを配列に格納
             }
-            // IniFileのCloneを作成し、結果を返す
-            return (InifileUtils[])sIni.Clone();
-        }
-        private ReadOnlyCollection<string> GetIniFileName(string filePath)
-        {
-            //参照にMicrosoft.VisualBasic.dllを追加する必要がある
-            //"DOBON.NET"を含むHTMLファイルを、大文字小文字を区別して探す
-            ReadOnlyCollection<string> files = FileSystem.FindInFiles(filePath, "", false, SearchOption.SearchAllSubDirectories, new string[] { "*.ini" } );
-
-            return files;
-        }
-        private string GetApplicationPath()
-        {
-            string appPath = Assembly.GetExecutingAssembly().Location;
-            //string filePath = appPath.Replace("ClipBoardItems.exe", "");
-
-            return appPath.Replace("ClipBoardItems.exe", "");
+            return (InifileUtils[])sIni.Clone(); // すべてのIniファイル名を返す
         }
     }
 }

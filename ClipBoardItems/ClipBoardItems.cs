@@ -2,49 +2,81 @@
 {
     using System;
     using System.Windows.Forms;
+    using TabControls;
 
     public partial class ClipBoardItems : Form
     {
-        ValueButton valBtn = new ValueButton();
+        private TabControl mainTabControl = new TabControl();
+        private TabPage[] tabPage = new TabPage[5];
+
+        private Button[,] buttonId = new Button[5, 20];
+        private static readonly string[] iniKeyId = { "CopyID", "NameID" };
+
+        private Button[,] buttonPw = new Button[5, 20];
+        private static readonly string[] iniKeyPw = { "CopyPW", "NamePW" };
 
         public ClipBoardItems()
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle; // サイズ変更不可の直線ウィンドウに変更する
-            this.MaximizeBox = !this.MaximizeBox;               //フォームの最大化ボタンの表示、非表示を切り替える
-            this.Height = 645;                                  // ウィンドウ本体の縦幅
-            this.Width = 375;                                   // ウィンドウ本体の横幅
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle; // サイズ変更不可の直線ウィンドウに変更する
+            this.MaximizeBox = !this.MaximizeBox; //フォームの最大化ボタンの表示、非表示を切り替える
+            //this.Height = 645;                  // ウィンドウ本体の縦幅
+            this.Height = 670;                    // ウィンドウ本体の縦幅
+            this.Width = 375;                     // ウィンドウ本体の横幅
         }
+
+        // LoadEvent
         private void ClipBoardItems_Load(object sender, EventArgs e)
         {
-            this.SuspendLayout(); //コントロールの描画を一旦止める
+            //コントロールの描画を一旦止める
+            this.SuspendLayout();
 
-            TabPages tabPage = new TabPages();
-            TabPage[] TabPages = tabPage.MainTabAndTabPageDrawing(Controls); // TabPageの描画
+            // MainTabの設定と描画の処理を行う
+            var mainControls = new MainTabControls(mainTabControl);
+            var mainDraw = new MainTabDrawing(Controls, mainTabControl);
+            mainControls.MainTabControlSetting();
+            mainDraw.MainTabDrow();
 
-            valBtn.BtnType(10, "CopyID", "NameID");     // ボタンの初期値設定
-            valBtn.ButtonCreate(ButtonClick, TabPages); // ボタンをタブページに描画
-            valBtn.BtnType(170, "CopyPW", "NamePW");    // ボタンの初期値設定
-            valBtn.ButtonCreate(ButtonClick, TabPages); // ボタンをタブページに描画
+            // TabPageの設定と描画の処理を行う
+            var tabControls = new TabPageControls(tabPage);
+            var tabPages = new TabPageDrawing(tabPage, mainTabControl);
+            tabControls.TabPageControlSetting();
+            tabPages.TabPageDrow();
 
-            this.ResumeLayout(false); //コントロールの描画を再開
+            // ButtonIdの設定と描画の処理を行う
+            var btnCreateId = new ButtonCreate(buttonId, ButtonClick, iniKeyId, 10);
+            var btnDrawId = new ButtonDrawing(tabPage, buttonId);
+            btnCreateId.CreateButton();
+            btnDrawId.ButtonDraw();
+
+            // ButtonPwの設定と描画の処理を行う
+            var ButtonCreatePw = new ButtonCreate(buttonPw, ButtonClick, iniKeyPw, 170);
+            var btnDrawPw = new ButtonDrawing(tabPage, buttonPw);
+            ButtonCreatePw.CreateButton();
+            btnDrawPw.ButtonDraw();
+
+            //コントロールの描画を再開
+            this.ResumeLayout(false);
         }
+        // ClickEvent
         private void ButtonClick(object sender, EventArgs e)
         {
-            string senderName = ((Button)sender).Name;
-            // Nameから数字を取り除いて、CopyID or CopyPW のみにする
-            string strCopy = senderName.Remove(6);
-            // 不要な文字列を削除して数値のみにする
-            string nameNumber = valBtn.strProcessing(senderName, strCopy);
-            // 
-            int number = int.Parse(nameNumber);
-            // TabPageに使用する番号を取得
-            int tabNumber = ((Button)sender).TabIndex;
+            // 押下したボタンから番号と種類を取得する
+            ButtonPush btnPush = new ButtonPush(sender);
+            int btnNumber = btnPush.PushBtnNum();
+            string btnType = btnPush.PushBtnType();
 
-            // Ini File から文字列を取得
-            string keyButton = valBtn.GetIniValue(tabNumber, number, strCopy);
-            // Clipboardに文字列をコピーする
-            valBtn.ClipBoardCopy(keyButton);
+            // iniファイルからクリップボードに読み込む文字列を取得する
+            StringIniFile stringIni = new StringIniFile(sender, btnNumber, btnType);
+            string BtnText = stringIni.SendText();
+
+            // 空文字の場合はエラーメッセージを取得する
+            StringCheck stringCheck = new StringCheck(BtnText);
+            BtnText = stringCheck.ConfirmString();
+
+            // ClipBoardに文字列コピー
+            ClipBoardSetText clipSet = new ClipBoardSetText(BtnText);
+            clipSet.ClipBoardSendText();
         }
     }
 }

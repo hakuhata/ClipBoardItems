@@ -48,7 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StringClipboardCopy.cs" />
+    <Compile Include="ButtonCreate.cs" />
+    <Compile Include="ButtonPush.cs" />
+    <Compile Include="ButtonDrawing.cs" />
+    <Compile Include="ClipBoardSetText.cs" />
+    <Compile Include="FindFiles.cs" />
+    <Compile Include="GetExecutingAssembly.cs" />
+    <Compile Include="StringCheck.cs" />
+    <Compile Include="TabControls\MainTabControls.cs" />
+    <Compile Include="TabControls\MainTabDrawing.cs" />
+    <Compile Include="StringIniFile.cs" />
     <Compile Include="ClipBoardItems.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,11 +68,8 @@
     <Compile Include="InifileUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringProcessing.cs" />
-    <Compile Include="TabPages.cs" />
-    <Compile Include="ValueButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="TabControls\TabPageDrawing.cs" />
+    <Compile Include="TabControls\TabPageControls.cs" />
     <EmbeddedResource Include="ClipBoardItems.resx">
       <DependentUpon>ClipBoardItems.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,6 +95,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

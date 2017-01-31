@@ -35,14 +35,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(128, 0);
-            this.Name = "ClipBoardItem";
+            this.Name = "ClipBoardItems";
             this.Text = "ClipBoardItem";
             this.Load += new System.EventHandler(this.ClipBoardItems_Load);
             this.ResumeLayout(false);
         }
 
         #endregion
-
     }
 }
 
